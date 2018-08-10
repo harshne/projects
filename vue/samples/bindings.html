@@ -1,14 +1,18 @@
 <html>
+    
     <body>
+            <style>
+                    .color-red {color: red;}
+                    
+            
+            
+            </style>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
         
             <div id ="root">
+                <h1 :class="className">Hello view</h1>
 
-                    <ul>
-                        <li v-for="name in names">{{ name }}</li>
-                    </ul>
-                    <input type="text" v-model="newName" >
-                    <button @click="onClick" :title="title">Add Names</button>
+
 
             </div>
             <script>
@@ -16,7 +20,8 @@
                     el:"#root",
                     data:{
                         title:"title by js",
-                        names:['harry','larry','santa','banta','ghanta']
+                        names:['harry','larry','santa','banta','ghanta'],
+                        className: 'color-red'
                     },
                     newName:'',
                     
