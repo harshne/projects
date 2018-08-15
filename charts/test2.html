@@ -1,0 +1,70 @@
+<html>
+<body>
+
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'City');
+    data.addColumn('number', 'Marker Color');
+    data.addColumn('number', 'Marker Size');
+    data.addColumn('date', 'Date');
+    data.addColumn('string', 'URL');
+    // dates are added in the format "new Date(year, month, day)"
+    // month is zero-index (so January is 0, February is 1, etc
+    data.addRows([
+        ['Berlin, Germany', 1, 1, new Date(1865, 4, 2), 'http://www.google.com'],
+        ['London, UK', 2, 1, new Date(1865, 3, 25), 'http://www.google.com'],
+        ['Moscow, Russia', 3, 1, new Date(1865, 4, 10), 'http://www.google.com'],
+        ['Ottawa, Canada', 4, 1, new Date(1865, 3, 20), 'http://www.google.com'],
+        ['Beijing, China', 5, 1, new Date(1865, 4, 22), 'http://www.google.com'],
+        ['Sao Paulo, Brazil', 6, 1, new Date(1865, 4, 7), 'http://www.google.com']
+    ]);
+    
+    // format the dates as "MMM dd, yyyy", eg. "Apr 20, 1865"
+    var dateFormatter = new google.visualization.DateFormat({pattern: 'MMM dd, yyyy'});
+    dateFormatter.format(data, 1);
+    
+    // use a DataView to join city and date in the tooltips
+    var view = new google.visualization.DataView(data);
+    view.setColumns([0, 1,2,3, {
+        type: 'string',
+        label: 'Dateeded',
+        calc: function (dt, row) {
+            return {
+                v: dt.getValue(row, 1),
+                f: dt.getFormattedValue(row, 4)
+            };
+        }
+    }]);
+    
+    var chart = new google.visualization.GeoChart(document.querySelector('#chart_div'));
+    
+    google.visualization.events.addListener(chart, 'select', function () {
+        var selection  = chart.getSelection();
+        if (selection.length > 0) {
+            window.open(data.getValue(selection[0].row, 4));
+        }
+    });
+    
+    chart.draw(view, {
+        width: 600,
+        displayMode: 'markers',
+        colorAxis: {
+            colors: ['#ff2352', '#23ff52']
+        },
+        sizeAxis: {
+            maxSize: 4 // maximum marker radius in pixels
+        }
+    });
+}
+google.load('visualization', '1', {packages:['geochart'], callback: drawChart});
+    </script>
+
+<div id="chart_div"></div>
+
+    
+</body>    
+
+
+</html>

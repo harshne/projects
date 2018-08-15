@@ -1,0 +1,71 @@
+<html>
+<body>
+
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'City');
+    
+    data.addColumn('string', 'Status');
+    data.addColumn('string', 'URL');
+    data.addColumn('number', 'Capacity');
+    // dates are added in the format "new Date(year, month, day)"
+    // month is zero-index (so January is 0, February is 1, etc
+    // data.addRows([
+    //     ['Berlin, Germany', 1, 1, new Date(1865, 4, 2), 'http://www.google.com'],
+    //     ['London, UK', 2, 1, new Date(1865, 3, 25), 'http://www.google.com'],
+    //     ['Moscow, Russia', 3, 1, new Date(1865, 4, 10), 'http://www.google.com'],
+    //     ['Ottawa, Canada', 4, 1, new Date(1865, 3, 20), 'http://www.google.com'],
+    //     ['Beijing, China', 5, 1, new Date(1865, 4, 22), 'http://www.google.com'],
+    //     ['Sao Paulo, Brazil', 6, 1, new Date(1865, 4, 7), 'http://www.google.com']
+    // ]);
+    
+    data.addRows([
+        ['Austin','UP','https://facebook.com',10],
+        ['Newton','Down','https://youtube.com',200],
+        ['Dallas','UP','https://youtube.com',300]
+    ]);
+
+
+    var view = new google.visualization.DataView(data);
+    
+    view.setColumns([0,3]);
+
+    // view.setColumns([0,1,2])
+
+    
+   var chart = new google.visualization.GeoChart(document.querySelector('#chart_div'));
+    
+    // google.visualization.events.addListener(chart, 'select', function () {
+    //     var selection  = chart.getSelection();
+    //     if (selection.length > 0) {
+    //         window.open(data.getValue(selection[0].row, 3));
+    //     }
+    // });
+    
+    chart.draw(view, {
+        //width: 600,
+        region:"US",
+        resolution:"province",
+        displayMode: 'markers',
+        colorAxis: {
+            colors: ['#ff2352', '#23ff52']
+        },
+        sizeAxis: {
+            minSize: 10,
+            maxSize: 20 // maximum marker radius in pixels
+        }
+    });
+}
+google.load('visualization', '1', {packages:['geochart'], callback: drawChart});
+
+    </script>
+
+<div id="chart_div"></div>
+
+    
+</body>    
+
+
+</html>

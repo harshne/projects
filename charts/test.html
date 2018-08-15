@@ -1,0 +1,62 @@
+<html>
+<body>
+
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'City');
+    //data.addColumn('date', 'Date');
+    data.addColumn('number', 'Marker Color');
+    data.addColumn('number', 'Marker Size');
+    // dates are added in the format "new Date(year, month, day)"
+    // month is zero-index (so January is 0, February is 1, etc
+    data.addRows([
+        ['Berlin, Germany', 1, 1],
+        ['London, UK',2, 1],
+        ['Moscow, Russia',3, 1],
+        ['Ottawa, Canada',4, 1],
+        ['Beijing, China',5, 1],
+        ['Sao Paulo, Brazil',6,1]
+    ]);
+    
+    // format the dates as "MMM dd, yyyy", eg. "Apr 20, 1865"
+    // var dateFormatter = new google.visualization.DateFormat({pattern: 'MMM dd, yyyy'});
+    // dateFormatter.format(data, 1);
+    
+    // use a DataView to join city and date in the tooltips
+    var view = new google.visualization.DataView(data);
+    view.setColumns([{
+        type: 'string',
+        label: 'City and Date',
+        calc: function (dt, row) {
+            return {
+                v: dt.getValue(row, 0),
+                f: dt.getValue(row, 0) + ' (' + dt.getFormattedValue(row, 1) + ')'
+            };
+        }
+    },0,1,2,1,1,1]);
+    
+    var chart = new google.visualization.GeoChart(document.querySelector('#chart_div'));
+    chart.draw(view, {
+        width: 900,
+        displayMode: 'markers',
+        colorAxis: {
+            colors: ['#ff2352', '#23ff52']
+        },
+        sizeAxis: {
+            maxSize: 4 // maximum marker radius in pixels
+        }
+    });
+}
+google.load('visualization', '1', {packages:['geochart'], callback: drawChart});
+
+    </script>
+
+<div id="chart_div"></div>
+
+    
+</body>    
+
+
+</html>
