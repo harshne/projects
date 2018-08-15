@@ -6,10 +6,13 @@
 function drawChart() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'City');
-    
-    data.addColumn('string', 'Status');
+    data.addColumn('number', 'Status');
+    data.addColumn('number', 'Capacity(MW)');
+    data.addColumn('string', 'Name');
+    data.addColumn('string', 'tooltip');
     data.addColumn('string', 'URL');
-    data.addColumn('number', 'Capacity');
+
+    
     // dates are added in the format "new Date(year, month, day)"
     // month is zero-index (so January is 0, February is 1, etc
     // data.addRows([
@@ -22,39 +25,65 @@ function drawChart() {
     // ]);
     
     data.addRows([
-        ['Austin','UP','https://facebook.com',10],
-        ['Newton','Down','https://youtube.com',200],
-        ['Dallas','UP','https://youtube.com',300]
+        ['1005 Congress Avenue,Austin',0,10,'Austin','UP','https://facebook.com'],
+        ['10901 Baldwin Road,Baldwin',1,20,'Baldwin Energy Complex','Down','https://youtube.com'],
+        // ['887 CR 257 Beckville',5,10,'Beckville Mine','UP','https://youtube.com'],
+        // ['155 Maple Street,Bellingham',1,30,'Bellingham - ANP','Down','https://youtube.com'],
+        // ['92 Depot Street,Bellingham,',1,5,'Bellingham - NEA','Down','https://youtube.com'],
+        // ['204 Elm Street,Blackstone',1,6,'Blackstone ANP','Down','https://youtube.com'],
+        // ['11653 S Torrance Ave,Chicago',1,8,'Calumet','Down','https://youtube.com'],
+        // ['125 Shore Road,Veazie',1,4,'Casco Bay Energy Facility','Down','https://youtube.com'],
+        // ['105 East Fourth Street,Cincinnati',5,3,'Cincinnati Office (Clopay)','Down','https://youtube.com'],
+        // ['100 N Keechi St	Fairfield',5,4,'Fairfield Real Estate Office','UP','http://evprappetsw01']
     ]);
 
 
     var view = new google.visualization.DataView(data);
+    var node_status=['DOWN','UP']
     
-    view.setColumns([0,3]);
-
-    // view.setColumns([0,1,2])
-
+    view.setColumns([{
+        type: 'string',
+        label: 'Site:',
+        
+        calc: function (dt, row) {
+            return {
+                v: dt.getValue(row, 0),
+                f: dt.getValue(row, 3) + ', Capacity:' + dt.getFormattedValue(row, 2)
+            };
+        }
+    }, {
+        type:'number',
+        label:'Statuss',
+        calc: function(dt,row){
+            return {
+                v:dt.getValue(row,1),
+                f:node_status[dt.getFormattedValue(row,1)]
+            }
+        }
+    }]);
     
    var chart = new google.visualization.GeoChart(document.querySelector('#chart_div'));
     
-    // google.visualization.events.addListener(chart, 'select', function () {
-    //     var selection  = chart.getSelection();
-    //     if (selection.length > 0) {
-    //         window.open(data.getValue(selection[0].row, 3));
-    //     }
-    // });
+    google.visualization.events.addListener(chart, 'select', function () {
+        var selection  = chart.getSelection();
+        if (selection.length > 0) {
+            window.open(data.getValue(selection[0].row, 3));
+        }
+    });
     
     chart.draw(view, {
-        //width: 600,
+        width: 900,
         region:"US",
-        resolution:"province",
+        resolution:"provinces",
         displayMode: 'markers',
+        legend:'none',
+        tooltip:{isHtml:true},
         colorAxis: {
-            colors: ['#ff2352', '#23ff52']
+            colors: ['red', 'green']
         },
         sizeAxis: {
             minSize: 10,
-            maxSize: 20 // maximum marker radius in pixels
+            maxSize: 11 // maximum marker radius in pixels
         }
     });
 }

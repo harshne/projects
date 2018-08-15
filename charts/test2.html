@@ -27,7 +27,7 @@ function drawChart() {
     
     // use a DataView to join city and date in the tooltips
     var view = new google.visualization.DataView(data);
-    view.setColumns([0, 1,2,3, {
+    view.setColumns([0, 1, {
         type: 'string',
         label: 'Dateeded',
         calc: function (dt, row) {
