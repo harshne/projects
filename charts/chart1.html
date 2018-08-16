@@ -27,14 +27,14 @@ function drawChart() {
     data.addRows([
         ['1005 Congress Avenue,Austin',0,10,'Austin','UP','https://facebook.com'],
         ['10901 Baldwin Road,Baldwin',1,20,'Baldwin Energy Complex','Down','https://youtube.com'],
-        // ['887 CR 257 Beckville',5,10,'Beckville Mine','UP','https://youtube.com'],
-        // ['155 Maple Street,Bellingham',1,30,'Bellingham - ANP','Down','https://youtube.com'],
-        // ['92 Depot Street,Bellingham,',1,5,'Bellingham - NEA','Down','https://youtube.com'],
-        // ['204 Elm Street,Blackstone',1,6,'Blackstone ANP','Down','https://youtube.com'],
-        // ['11653 S Torrance Ave,Chicago',1,8,'Calumet','Down','https://youtube.com'],
-        // ['125 Shore Road,Veazie',1,4,'Casco Bay Energy Facility','Down','https://youtube.com'],
-        // ['105 East Fourth Street,Cincinnati',5,3,'Cincinnati Office (Clopay)','Down','https://youtube.com'],
-        // ['100 N Keechi St	Fairfield',5,4,'Fairfield Real Estate Office','UP','http://evprappetsw01']
+        ['887 CR 257 Beckville',1,10,'Beckville Mine','UP','https://youtube.com'],
+        ['155 Maple Street,Bellingham',1,30,'Bellingham - ANP','Down','https://youtube.com'],
+        ['92 Depot Street,Bellingham,',1,5,'Bellingham - NEA','Down','https://youtube.com'],
+        ['204 Elm Street,Blackstone',0,6,'Blackstone ANP','Down','https://youtube.com'],
+        ['11653 S Torrance Ave,Chicago',1,8,'Calumet','Down','https://youtube.com'],
+        ['125 Shore Road,Veazie',1,4,'Casco Bay Energy Facility','Down','https://youtube.com'],
+        ['105 East Fourth Street,Cincinnati',0,3,'Cincinnati Office (Clopay)','Down','https://youtube.com'],
+        ['100 N Keechi St	Fairfield',0,4,'Fairfield Real Estate Office','UP','http://evprappetsw01']
     ]);
 
 
@@ -53,7 +53,7 @@ function drawChart() {
         }
     }, {
         type:'number',
-        label:'Statuss',
+        label:'Status',
         calc: function(dt,row){
             return {
                 v:dt.getValue(row,1),
@@ -67,7 +67,7 @@ function drawChart() {
     google.visualization.events.addListener(chart, 'select', function () {
         var selection  = chart.getSelection();
         if (selection.length > 0) {
-            window.open(data.getValue(selection[0].row, 3));
+            window.open(data.getValue(selection[0].row, 5));
         }
     });
     
