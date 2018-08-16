@@ -1,0 +1,100 @@
+<html>
+<body>
+
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'City');
+    data.addColumn('number', 'Status');
+    data.addColumn('number', 'Capacity(MW)');
+    data.addColumn('string', 'Name');
+    data.addColumn('string', 'tooltip');
+    data.addColumn('string', 'URL');
+
+    
+    // dates are added in the format "new Date(year, month, day)"
+    // month is zero-index (so January is 0, February is 1, etc
+    // data.addRows([
+    //     ['Berlin, Germany', 1, 1, new Date(1865, 4, 2), 'http://www.google.com'],
+    //     ['London, UK', 2, 1, new Date(1865, 3, 25), 'http://www.google.com'],
+    //     ['Moscow, Russia', 3, 1, new Date(1865, 4, 10), 'http://www.google.com'],
+    //     ['Ottawa, Canada', 4, 1, new Date(1865, 3, 20), 'http://www.google.com'],
+    //     ['Beijing, China', 5, 1, new Date(1865, 4, 22), 'http://www.google.com'],
+    //     ['Sao Paulo, Brazil', 6, 1, new Date(1865, 4, 7), 'http://www.google.com']
+    // ]);
+    
+    data.addRows([
+        ['1005 Congress Avenue,Austin',0,10,'Austin','UP','https://facebook.com'],
+        ['10901 Baldwin Road,Baldwin',1,20,'Baldwin Energy Complex','Down','https://youtube.com'],
+        ['887 CR 257 Beckville',1,10,'Beckville Mine','UP','https://youtube.com'],
+        ['155 Maple Street,Bellingham',1,30,'Bellingham - ANP','Down','https://youtube.com'],
+        ['92 Depot Street,Bellingham,',1,5,'Bellingham - NEA','Down','https://youtube.com'],
+        ['204 Elm Street,Blackstone',0,6,'Blackstone ANP','Down','https://youtube.com'],
+        ['11653 S Torrance Ave,Chicago',1,8,'Calumet','Down','https://youtube.com'],
+        ['125 Shore Road,Veazie',1,4,'Casco Bay Energy Facility','Down','https://youtube.com'],
+        ['105 East Fourth Street,Cincinnati',0,3,'Cincinnati Office (Clopay)','Down','https://youtube.com'],
+        ['100 N Keechi St	Fairfield',0,4,'Fairfield Real Estate Office','UP','http://evprappetsw01']
+    ]);
+
+
+    var view = new google.visualization.DataView(data);
+    var node_status=['DOWN','UP']
+    
+    view.setColumns([{
+        type: 'string',
+        label: 'Site:',
+        
+        calc: function (dt, row) {
+            return {
+                v: dt.getValue(row, 0),
+                f: dt.getValue(row, 3) + ', Capacity:' + dt.getFormattedValue(row, 2)
+            };
+        }
+    }, {
+        type:'number',
+        label:'Status',
+        calc: function(dt,row){
+            return {
+                v:dt.getValue(row,1),
+                f:node_status[dt.getFormattedValue(row,1)]
+            }
+        }
+    }]);
+    
+   var chart = new google.visualization.GeoChart(document.querySelector('#chart_div'));
+    
+    google.visualization.events.addListener(chart, 'select', function () {
+        var selection  = chart.getSelection();
+        if (selection.length > 0) {
+            window.open(data.getValue(selection[0].row, 5));
+        }
+    });
+    
+    chart.draw(view, {
+        width: 900,
+        region:"US",
+        resolution:"provinces",
+        displayMode: 'markers',
+        legend:'none',
+        tooltip:{isHtml:true},
+        colorAxis: {
+            colors: ['red', 'green']
+        },
+        sizeAxis: {
+            minSize: 10,
+            maxSize: 11 // maximum marker radius in pixels
+        }
+    });
+}
+google.load('visualization', '1', {packages:['geochart'], callback: drawChart});
+
+    </script>
+
+<div id="chart_div"></div>
+
+    
+</body>    
+
+
+</html>
