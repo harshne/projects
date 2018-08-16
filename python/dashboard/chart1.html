@@ -9,7 +9,6 @@ function drawChart() {
     data.addColumn('number', 'Status');
     data.addColumn('number', 'Capacity(MW)');
     data.addColumn('string', 'Name');
-    data.addColumn('string', 'tooltip');
     data.addColumn('string', 'URL');
 
     
@@ -25,16 +24,16 @@ function drawChart() {
     // ]);
     
     data.addRows([
-        ['1005 Congress Avenue,Austin',0,10,'{{ name }}','UP','https://facebook.com'],
-        ['10901 Baldwin Road,Baldwin',1,20,'Baldwin Energy Complex','Down','https://youtube.com'],
-        ['887 CR 257 Beckville',1,10,'Beckville Mine','UP','https://youtube.com'],
-        ['155 Maple Street,Bellingham',1,30,'Bellingham - ANP','Down','https://youtube.com'],
-        ['92 Depot Street,Bellingham,',1,5,'Bellingham - NEA','Down','https://youtube.com'],
-        ['204 Elm Street,Blackstone',0,6,'Blackstone ANP','Down','https://youtube.com'],
-        ['11653 S Torrance Ave,Chicago',1,8,'Calumet','Down','https://youtube.com'],
-        ['125 Shore Road,Veazie',1,4,'Casco Bay Energy Facility','Down','https://youtube.com'],
-        ['105 East Fourth Street,Cincinnati',0,3,'Cincinnati Office (Clopay)','Down','https://youtube.com'],
-        ['100 N Keechi St	Fairfield',0,4,'Fairfield Real Estate Office','UP','http://evprappetsw01']
+        ['1005 Congress Avenue,Austin',0,10,'Austin','https://facebook.com'],
+        ['10901 Baldwin Road,Baldwin',1,20,'Baldwin Energy Complex','https://youtube.com'],
+        ['887 CR 257 Beckville',1,10,'Beckville Mine','https://youtube.com'],
+        ['155 Maple Street,Bellingham',1,30,'Bellingham - ANP','https://youtube.com'],
+        ['92 Depot Street,Bellingham,',1,5,'Bellingham - NEA','https://youtube.com'],
+        ['204 Elm Street,Blackstone',0,6,'Blackstone ANP','https://youtube.com'],
+        ['11653 S Torrance Ave,Chicago',1,8,'Calumet','https://youtube.com'],
+        ['125 Shore Road,Veazie',1,4,'Casco Bay Energy Facility','https://youtube.com'],
+        ['105 East Fourth Street,Cincinnati',0,3,'Cincinnati Office (Clopay)','https://youtube.com'],
+        ['100 N Keechi St Fairfield',0,4,'Fairfield Real Estate Office','http://evprappetsw01']
     ]);
 
 
@@ -67,7 +66,7 @@ function drawChart() {
     google.visualization.events.addListener(chart, 'select', function () {
         var selection  = chart.getSelection();
         if (selection.length > 0) {
-            window.open(data.getValue(selection[0].row, 5));
+            window.open(data.getValue(selection[0].row, 4));
         }
     });
     
