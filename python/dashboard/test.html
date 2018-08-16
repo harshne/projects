@@ -1,5 +1,83 @@
 <html>
-    <body>
-        <h1>Hi {{ name }}</h1>
-    </body>
+<body>
+
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'City');
+    data.addColumn('number', 'Status');
+    data.addColumn('number', 'Capacity(MW)');
+    data.addColumn('string', 'Name');
+   // data.addColumn('string', 'tooltip');
+    data.addColumn('string', 'URL');
+
+    
+
+    var sites = [{{!sites}}]
+    // console.log(sites[0])
+    data.addRows(
+        sites[0]
+    );
+
+
+    var view = new google.visualization.DataView(data);
+    var node_status=['DOWN','UP']
+    
+    view.setColumns([{
+        type: 'string',
+        label: 'Site:',
+        
+        calc: function (dt, row) {
+            return {
+                v: dt.getValue(row, 0),
+                f: dt.getValue(row, 3) + ', Capacity:' + dt.getFormattedValue(row, 2)
+            };
+        }
+    }, {
+        type:'number',
+        label:'Status',
+        calc: function(dt,row){
+            return {
+                v:dt.getValue(row,1),
+                f:node_status[dt.getFormattedValue(row,1)]
+            }
+        }
+    }]);
+    
+   var chart = new google.visualization.GeoChart(document.querySelector('#chart_div'));
+    
+    google.visualization.events.addListener(chart, 'select', function () {
+        var selection  = chart.getSelection();
+        if (selection.length > 0) {
+            window.open(data.getValue(selection[0].row, 4));
+        }
+    });
+    
+    chart.draw(view, {
+        width: 900,
+        region:"US",
+        resolution:"provinces",
+        displayMode: 'markers',
+        legend:'none',
+        tooltip:{isHtml:true},
+        colorAxis: {
+            colors: ['red', 'green']
+        },
+        sizeAxis: {
+            minSize: 10,
+            maxSize: 11 // maximum marker radius in pixels
+        }
+    });
+}
+google.load('visualization', '1', {packages:['geochart'], callback: drawChart});
+
+    </script>
+
+<div id="chart_div"></div>
+
+    
+</body>    
+
+
 </html>
